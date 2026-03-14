@@ -4,421 +4,578 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Subway 10</title>
-  <meta name="theme-color" content="#0c0f13" />
   <style>
-    :root{
-      --bg:#080a0d;
-      --bg2:#11161d;
-      --panel:#12171e;
-      --panel-2:#171e27;
-      --text:#f4f7fb;
-      --muted:#9ba8b8;
-      --border:#273140;
-      --line-1:#00933c;
-      --line-2:#0039a6;
-      --line-3:#fccc0a;
-      --line-4:#ee352e;
-      --line-5:#b933ad;
-      --line-6:#ff6319;
-      --line-7:#6c757d;
-      --blue:#2291ff;
-      --green:#35c759;
-      --red:#ff5a5f;
-      --shadow:0 14px 30px rgba(0,0,0,.32);
+    :root {
+      --bg: #0b0f14;
+      --panel: #121821;
+      --panel-2: #19212c;
+      --text: #f4f7fb;
+      --muted: #9ba9bc;
+      --accent: #fccc0a;
+      --line-red: #ef3e42;
+      --line-blue: #2850ad;
+      --line-green: #00933c;
+      --success: #22c55e;
+      --error: #ef4444;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      --radius: 22px;
     }
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      min-height:100%;
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background:
-        radial-gradient(circle at top, rgba(34,145,255,.08), transparent 28%),
-        linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
-      color:var(--text);
-      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+        radial-gradient(circle at top, rgba(252, 204, 10, 0.08), transparent 28%),
+        linear-gradient(180deg, #0a0f15 0%, #10161d 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 14px;
     }
-    body{padding:14px 12px 28px}
-    .app{max-width:460px;margin:0 auto}
-    .header,
-    .section{
-      background:linear-gradient(180deg,rgba(19,24,31,.98) 0%, rgba(14,18,24,.98) 100%);
-      border:1px solid var(--border);
-      border-radius:24px;
-      box-shadow:var(--shadow);
+
+    .app {
+      max-width: 460px;
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
     }
-    .header{
-      padding:16px 16px 14px;
-      overflow:hidden;
-      position:relative;
+
+    .header {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 24px;
+      padding: 16px 16px 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
     }
-    .header::after{
-      content:"";
-      position:absolute;
-      inset:auto -60px -60px auto;
-      width:160px;height:160px;border-radius:50%;
-      background:radial-gradient(circle, rgba(255,255,255,.07), transparent 65%);
-      pointer-events:none;
+
+    .header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--line-red) 0 33%, var(--line-blue) 33% 66%, var(--line-green) 66% 100%);
     }
-    .stripe-row{display:flex;gap:7px;margin-bottom:12px}
-    .stripe{height:7px;border-radius:999px;flex:1;opacity:.95}
-    .s1{background:var(--line-1)} .s2{background:var(--line-2)} .s3{background:var(--line-3)}
-    .s4{background:var(--line-4)} .s5{background:var(--line-5)} .s6{background:var(--line-6)} .s7{background:var(--line-7)}
-    .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#d4dde8;font-weight:800;margin-bottom:6px}
-    h1{margin:0;font-size:30px;line-height:1.02;letter-spacing:-.03em}
-    .sub{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.38;max-width:34ch}
-    .section{margin-top:14px;padding:14px}
-    .display{
-      background:linear-gradient(180deg,#0d1218 0%, #161d25 100%);
-      border:1px solid #2a3442;
-      border-radius:20px;
-      padding:13px;
-      margin-bottom:10px;
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
     }
-    .display-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
-    .badge{
-      display:inline-flex;align-items:center;gap:8px;
-      background:#0a0f15;border:1px solid #253141;color:#dae4ef;
-      padding:7px 10px;border-radius:999px;font-size:12px;font-weight:750;
+
+    .title-wrap h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1;
+      letter-spacing: 0.4px;
     }
-    .route-bullets{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-    .route{
-      width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-      font-size:10px;font-weight:900;color:#fff;box-shadow:inset 0 -1px 0 rgba(255,255,255,.15)
+
+    .subtitle {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 13px;
     }
-    .r-a{background:#0039a6}.r-d{background:#ff6319}.r-7{background:#b933ad}.r-q{background:#fccc0a;color:#111}
-    .number{font-size:58px;line-height:1;font-weight:900;letter-spacing:6px;text-align:center;margin:10px 0 8px;text-shadow:0 3px 14px rgba(0,0,0,.4)}
-    .caption{text-align:center;color:var(--muted);font-size:13px}
-    .input{
-      width:100%;border:1px solid #344255;background:#0d1218;color:var(--text);
-      border-radius:16px;padding:15px 14px;font-size:20px;outline:none;
+
+    .badge {
+      background: rgba(252, 204, 10, 0.14);
+      color: #ffe27d;
+      border: 1px solid rgba(252, 204, 10, 0.28);
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
     }
-    .input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(34,145,255,.18)}
-    .controls{display:grid;grid-template-columns:1.05fr .95fr .95fr;gap:8px;margin-top:10px}
-    button{
-      border:none;border-radius:15px;padding:12px 10px;font-size:14px;font-weight:800;cursor:pointer;
-      color:#fff;background:#24303d;box-shadow:0 7px 16px rgba(0,0,0,.2);min-height:46px
+
+    .card {
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: var(--shadow);
     }
-    button:active{transform:translateY(1px)}
-    .primary{background:linear-gradient(180deg,#2b9bff,#157eff)}
-    .accent{background:linear-gradient(180deg,#ff7e2d,#ff6319)}
-    .ghost{background:linear-gradient(180deg,#2a333f,#212933)}
-    .show-wrap{margin-top:12px}
-    .show-btn{width:100%;background:linear-gradient(180deg,#45d26d,#30bf56)}
-    .status{
-      margin-top:11px;padding:12px 13px;border-radius:15px;font-weight:700;font-size:14px;line-height:1.35;
-      border:1px solid transparent;
+
+    .number-box {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-radius: 18px;
+      padding: 14px;
+      text-align: center;
+      margin-top: 14px;
     }
-    .status.info{background:rgba(34,145,255,.11);color:#c1e0ff;border-color:rgba(34,145,255,.22)}
-    .status.good{background:rgba(53,199,89,.12);color:#bef3cb;border-color:rgba(53,199,89,.24)}
-    .status.bad{background:rgba(255,90,95,.12);color:#ffc8ca;border-color:rgba(255,90,95,.22)}
-    .stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
-    .stat{background:var(--panel-2);border:1px solid var(--border);border-radius:16px;padding:12px}
-    .k{font-size:12px;color:var(--muted);margin-bottom:6px}
-    .v{font-size:22px;font-weight:900;line-height:1.05}
-    .s{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.3}
-    .solution{
-      margin-top:12px;padding:14px;border-radius:16px;background:#0f141b;border:1px dashed #3a4758;
-      color:#f5f7fb;display:none
+
+    .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      color: var(--muted);
+      margin-bottom: 6px;
     }
-    .solution code{
-      display:block;background:#090d12;border:1px solid #2b3543;color:#ffd60a;border-radius:12px;
-      padding:11px;font-size:18px;word-break:break-word;margin-top:8px
+
+    .digits {
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 8px;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
     }
-    .rules{margin-top:14px;color:var(--muted);font-size:13px;line-height:1.5}
-    .rules b{color:#eff4fa}
-    .tiny{font-size:11px;color:#8794a4;margin-top:8px}
-    @media (max-width:390px){
-      .number{font-size:50px;letter-spacing:4px}
-      .controls{grid-template-columns:1fr 1fr}
-      .controls .primary{grid-column:1 / -1}
+
+    .expression-wrap {
+      margin-top: 12px;
     }
+
+    .expression-display {
+      width: 100%;
+      background: var(--panel-2);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text);
+      border-radius: 18px;
+      padding: 16px 14px;
+      font-size: 22px;
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .expression-display.empty {
+      color: #708199;
+    }
+
+    .button-row,
+    .mini-row {
+      display: grid;
+      gap: 10px;
+    }
+
+    .button-row {
+      grid-template-columns: 1fr 1fr;
+      margin-top: 12px;
+    }
+
+    .mini-row {
+      grid-template-columns: 1fr 1fr 1fr;
+      margin-top: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 16px;
+      padding: 14px 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      background: #243041;
+      cursor: pointer;
+      transition: transform 0.06s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:active { transform: scale(0.985); }
+
+    .primary { background: var(--line-blue); }
+    .accent { background: #7a5d00; color: #fff4c2; }
+    .good { background: #13653a; }
+    .danger { background: #5a1d25; }
+    .soft { background: #202a36; }
+
+    .status {
+      margin-top: 12px;
+      border-radius: 16px;
+      padding: 12px 13px;
+      font-size: 14px;
+      line-height: 1.4;
+      background: rgba(40, 80, 173, 0.15);
+      color: #b7cdfd;
+      border: 1px solid rgba(40, 80, 173, 0.28);
+    }
+
+    .status.success {
+      background: rgba(34, 197, 94, 0.14);
+      color: #a7f3c5;
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    .status.error {
+      background: rgba(239, 68, 68, 0.14);
+      color: #fecaca;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat {
+      background: var(--panel-2);
+      border-radius: 18px;
+      padding: 12px 10px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .stat .k {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .stat .v {
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .key {
+      background: #202a36;
+      min-height: 56px;
+      font-size: 24px;
+      font-weight: 800;
+      border-radius: 18px;
+    }
+
+    .key.op { background: #2a3542; }
+    .key.action { font-size: 16px; }
+    .key.enter { background: var(--line-green); }
+    .key.back { background: #4c2b31; }
+
+    .footer-actions {
+      margin-top: 12px;
+    }
+
+    .rules {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .rules ul {
+      margin: 8px 0 0;
+      padding-left: 18px;
+    }
+
+    .hidden { display: none; }
   </style>
 </head>
 <body>
   <div class="app">
-    <div class="header">
-      <div class="stripe-row" aria-hidden="true">
-        <div class="stripe s1"></div><div class="stripe s2"></div><div class="stripe s3"></div><div class="stripe s4"></div><div class="stripe s5"></div><div class="stripe s6"></div><div class="stripe s7"></div>
-      </div>
-      <div class="eyebrow">Commute puzzle</div>
-      <h1>Subway 10</h1>
-      <p class="sub">Look at the car number, keep the digits in order, and make it equal <b>10</b>.</p>
-    </div>
-
-    <div class="section">
-      <div class="display">
-        <div class="display-top">
-          <div class="badge">Current train</div>
-          <div class="route-bullets" aria-hidden="true">
-            <span class="route r-a">A</span>
-            <span class="route r-d">D</span>
-            <span class="route r-7">7</span>
-            <span class="route r-q">Q</span>
-          </div>
+    <section class="header">
+      <div class="top-row">
+        <div class="title-wrap">
+          <h1>Subway 10</h1>
+          <div class="subtitle">Use the digits in order to make 10.</div>
         </div>
-        <div class="number" id="trainNumber">2368</div>
-        <div class="caption" id="modeCaption">Type your expression below</div>
+        <div class="badge">Phone-friendly</div>
+      </div>
+      <div class="number-box">
+        <div class="label">Current train number</div>
+        <div id="trainDigits" class="digits">2368</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="label">Your expression</div>
+      <div id="expressionDisplay" class="expression-display empty">Tap the keypad to build a solution</div>
+
+      <div class="button-row">
+        <button class="accent" id="randomBtn">Random solvable</button>
+        <button class="soft" id="liveBtn">Check live train number</button>
       </div>
 
-      <input id="expressionInput" class="input" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Example: (2*(3+6))-8" />
-
-      <div class="controls">
-        <button class="primary" onclick="checkExpression()">Check solution</button>
-        <button class="accent" onclick="generateSolvableNumber()">Random solvable</button>
-        <button class="ghost" onclick="checkLiveTrainNumber()">Live train #</button>
+      <div class="mini-row">
+        <button class="good" id="checkBtn">Check solution</button>
+        <button class="soft" id="clearBtn">Clear</button>
+        <button class="soft" id="backBtn">Delete</button>
       </div>
 
-      <div id="status" class="status info">2368 works. Try solving it yourself, or reveal it at the bottom.</div>
+      <div id="status" class="status">Try 2368. There is at least one valid answer.</div>
 
+      <div class="keypad" id="keypad"></div>
+
+      <div class="footer-actions">
+        <button class="soft" id="showSolutionBtn" style="width:100%;">Show solution</button>
+      </div>
+    </section>
+
+    <section class="card">
       <div class="stats">
         <div class="stat">
-          <div class="k">Unique solvable trains solved</div>
-          <div class="v" id="solvedCount">0</div>
-          <div class="s" id="solvedPercent">0.00% of all solvable combos</div>
+          <div class="k">Solved</div>
+          <div id="solvedCount" class="v">0</div>
         </div>
         <div class="stat">
-          <div class="k">Solvable combos total</div>
-          <div class="v">7,437</div>
-          <div class="s">Out of 10,000 four-digit combinations</div>
+          <div class="k">Solvable seen</div>
+          <div id="seenCount" class="v">0</div>
+        </div>
+        <div class="stat">
+          <div class="k">Progress</div>
+          <div id="progressPct" class="v">0.00%</div>
         </div>
       </div>
+    </section>
 
-      <div class="solution" id="solutionBox">
-        <div><b>Solution</b></div>
-        <code id="solutionText"></code>
-      </div>
-
-      <div class="show-wrap">
-        <button class="show-btn" onclick="showSolution()">Show solution</button>
-      </div>
-    </div>
-
-    <div class="section rules">
-      <div><b>Rules:</b> Use all 4 digits exactly once, keep them in order, and use <b>+, -, *, /, ^</b> plus parentheses. Concatenation like <b>23</b> is allowed.</div>
-      <div class="tiny">Progress is stored on this device. The percentage tracks how many unique solvable train numbers you’ve completed out of all 7,437 solvable combinations.</div>
-    </div>
+    <section class="card rules">
+      <div class="label">Rules</div>
+      <ul>
+        <li>Digits must stay in order and each digit must be used exactly once.</li>
+        <li>You can use +, -, ×, ÷, ^, and parentheses.</li>
+        <li>You can combine adjacent digits into bigger numbers like 23 or 68.</li>
+        <li>“Check live train number” tells you if a number is solvable without revealing the answer.</li>
+      </ul>
+    </section>
   </div>
 
-<script>
-(() => {
-  const TOTAL_SOLVABLE_COMBOS = 7437;
-  let currentNumber = "2368";
-  let currentSolution = "(2*(3+6))-8";
-  let currentMode = "manual";
-  const memo = new Map();
+  <script>
+    const TOTAL_SOLVABLE = 7437;
+    const keypadLayout = [
+      '7','8','9','(',
+      '4','5','6',')',
+      '1','2','3','^',
+      '0','+','-','*',
+      '/','23','68','10'
+    ];
 
-  const storageKey = "subway10_stats_v5";
-  const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
-  const solvedSet = new Set(Array.isArray(saved.solvedNumbers) ? saved.solvedNumbers : []);
+    let currentDigits = '2368';
+    let currentExpression = '';
+    let currentSolution = '(2*(3+6))-8';
+    const solvedSet = new Set(JSON.parse(localStorage.getItem('subway10_solved') || '[]'));
+    const seenSolvableSet = new Set(JSON.parse(localStorage.getItem('subway10_seen_solvable') || '[]'));
 
-  function saveStats() {
-    localStorage.setItem(storageKey, JSON.stringify({ solvedNumbers: [...solvedSet] }));
-  }
-
-  function $(id){ return document.getElementById(id); }
-
-  function updateUI() {
-    $("trainNumber").textContent = currentNumber;
-    $("modeCaption").textContent = currentMode === "random"
-      ? "Guaranteed solvable random number"
-      : "Type your expression below";
-    $("solvedCount").textContent = solvedSet.size.toLocaleString();
-    $("solvedPercent").textContent = ((solvedSet.size / TOTAL_SOLVABLE_COMBOS) * 100).toFixed(2) + "% of all solvable combos";
-  }
-
-  function setStatus(message, type="info") {
-    const el = $("status");
-    el.className = "status " + type;
-    el.innerHTML = message;
-  }
-
-  function normalizeExpression(expr) {
-    return expr.replace(/\s+/g, "");
-  }
-
-  function digitsOnly(expr) {
-    return expr.replace(/[^0-9]/g, "");
-  }
-
-  function evaluateExpression(expr) {
-    const jsExpr = expr.replace(/\^/g, "**");
-    return Function('"use strict"; return (' + jsExpr + ')')();
-  }
-
-  function prettyNumber(n) {
-    if (Math.abs(n - Math.round(n)) < 1e-9) return String(Math.round(n));
-    return Number(n.toFixed(6)).toString();
-  }
-
-  function hideSolution() {
-    $("solutionBox").style.display = "none";
-    $("solutionText").textContent = "";
-  }
-
-  function setCurrentNumber(num, mode="manual") {
-    currentNumber = num;
-    currentMode = mode;
-    $("expressionInput").value = "";
-    hideSolution();
-    const solution = solveNumber(currentNumber);
-    currentSolution = solution ? solution.expr : null;
-    updateUI();
-  }
-
-  function checkExpression() {
-    const raw = $("expressionInput").value.trim();
-    if (!raw) {
-      setStatus("Enter an expression first.", "bad");
-      return;
+    function saveSets() {
+      localStorage.setItem('subway10_solved', JSON.stringify([...solvedSet]));
+      localStorage.setItem('subway10_seen_solvable', JSON.stringify([...seenSolvableSet]));
     }
 
-    const normalized = normalizeExpression(raw);
-    if (digitsOnly(normalized) !== currentNumber) {
-      setStatus("Digits must stay in order and match <b>" + currentNumber + "</b> exactly.", "bad");
-      return;
+    function updateStats() {
+      document.getElementById('solvedCount').textContent = solvedSet.size;
+      document.getElementById('seenCount').textContent = seenSolvableSet.size;
+      document.getElementById('progressPct').textContent = ((solvedSet.size / TOTAL_SOLVABLE) * 100).toFixed(2) + '%';
     }
 
-    try {
-      const result = evaluateExpression(normalized);
-      if (!Number.isFinite(result)) {
-        setStatus("That expression isn’t valid.", "bad");
-        return;
-      }
-      if (Math.abs(result - 10) < 1e-9) {
-        solvedSet.add(currentNumber);
-        saveStats();
-        updateUI();
-        setStatus("Nice — <b>" + normalized + "</b> = 10.", "good");
+    function setStatus(message, type = '') {
+      const el = document.getElementById('status');
+      el.className = 'status' + (type ? ' ' + type : '');
+      el.textContent = message;
+    }
+
+    function renderExpression() {
+      const el = document.getElementById('expressionDisplay');
+      if (!currentExpression) {
+        el.textContent = 'Tap the keypad to build a solution';
+        el.classList.add('empty');
       } else {
-        setStatus("That equals <b>" + prettyNumber(result) + "</b>, not 10.", "bad");
+        el.textContent = currentExpression;
+        el.classList.remove('empty');
       }
-    } catch (e) {
-      setStatus("Invalid expression. Check parentheses and operators.", "bad");
-    }
-  }
-
-  function checkLiveTrainNumber() {
-    const value = prompt("Enter the 4-digit train car number:", currentNumber);
-    if (value === null) return;
-    const cleaned = value.trim();
-    if (!/^\d{4}$/.test(cleaned)) {
-      setStatus("Please enter exactly 4 digits.", "bad");
-      return;
     }
 
-    const solution = solveNumber(cleaned);
-    setCurrentNumber(cleaned, "manual");
-    if (solution) {
-      currentSolution = solution.expr;
-      setStatus("<b>" + cleaned + "</b> is solvable. Try it yourself.", "good");
-    } else {
-      currentSolution = null;
-      setStatus("<b>" + cleaned + "</b> does not appear solvable under these rules.", "bad");
-    }
-  }
-
-  function generateSolvableNumber() {
-    let num = "";
-    let solution = null;
-    do {
-      num = String(Math.floor(Math.random() * 10000)).padStart(4, "0");
-      solution = solveNumber(num);
-    } while (!solution);
-    setCurrentNumber(num, "random");
-    currentSolution = solution.expr;
-    setStatus("New solvable train loaded.", "info");
-  }
-
-  function showSolution() {
-    if (!currentSolution) {
-      const solution = solveNumber(currentNumber);
-      currentSolution = solution ? solution.expr : null;
-    }
-    if (!currentSolution) {
-      setStatus("No solution found for <b>" + currentNumber + "</b>.", "bad");
-      return;
-    }
-    $("solutionText").textContent = currentSolution + " = 10";
-    $("solutionBox").style.display = "block";
-    $("solutionBox").scrollIntoView({behavior:"smooth", block:"nearest"});
-  }
-
-  function roundKey(n) {
-    return String(Number(n.toFixed(10)));
-  }
-
-  function isIntegerLike(n) {
-    return Math.abs(n - Math.round(n)) < 1e-9;
-  }
-
-  function isReasonableExponent(base, exp) {
-    if (!isIntegerLike(exp)) return false;
-    const e = Math.round(exp);
-    if (Math.abs(e) > 6) return false;
-    if (Math.abs(base) > 20) return false;
-    if (base === 0 && e < 0) return false;
-    const p = Math.pow(base, e);
-    return Number.isFinite(p) && Math.abs(p) <= 1e9;
-  }
-
-  function buildValues(digits) {
-    const key = digits.join("");
-    if (memo.has(key)) return memo.get(key);
-
-    const results = new Map();
-
-    function add(val, expr) {
-      if (!Number.isFinite(val)) return;
-      if (Math.abs(val) > 1e9) return;
-      const rounded = roundKey(val);
-      if (!results.has(rounded)) results.set(rounded, expr);
+    function setDigits(digits) {
+      currentDigits = digits;
+      document.getElementById('trainDigits').textContent = digits;
+      currentExpression = '';
+      renderExpression();
     }
 
-    add(Number(digits.join("")), digits.join(""));
-
-    if (digits.length === 1) {
-      memo.set(key, results);
-      return results;
+    function normalize(expr) {
+      return expr.replace(/\s+/g, '');
     }
 
-    for (let i = 1; i < digits.length; i++) {
-      const left = buildValues(digits.slice(0, i));
-      const right = buildValues(digits.slice(i));
+    function extractDigits(expr) {
+      return expr.replace(/[^0-9]/g, '');
+    }
 
-      for (const [lvKey, le] of left.entries()) {
-        const lv = Number(lvKey);
-        for (const [rvKey, re] of right.entries()) {
-          const rv = Number(rvKey);
-          add(lv + rv, `(${le}+${re})`);
-          add(lv - rv, `(${le}-${re})`);
-          add(lv * rv, `(${le}*${re})`);
-          if (Math.abs(rv) > 1e-12) add(lv / rv, `(${le}/${re})`);
-          if (isReasonableExponent(lv, rv)) {
-            const p = Math.pow(lv, rv);
-            if (Number.isFinite(p)) add(p, `(${le}^${re})`);
+    function evaluateExpression(expr) {
+      return Function('"use strict"; return (' + expr.replace(/\^/g, '**') + ')')();
+    }
+
+    function digitsPartitions(digits) {
+      const out = [];
+      function helper(i, parts) {
+        if (i === digits.length) {
+          out.push(parts.slice());
+          return;
+        }
+        for (let j = i + 1; j <= digits.length; j++) {
+          parts.push(digits.slice(i, j));
+          helper(j, parts);
+          parts.pop();
+        }
+      }
+      helper(0, []);
+      return out;
+    }
+
+    function buildExpressions(nums) {
+      if (nums.length === 1) return [{ value: Number(nums[0]), expr: nums[0] }];
+      const results = [];
+      for (let i = 1; i < nums.length; i++) {
+        const left = buildExpressions(nums.slice(0, i));
+        const right = buildExpressions(nums.slice(i));
+        for (const a of left) {
+          for (const b of right) {
+            results.push({ value: a.value + b.value, expr: `(${a.expr}+${b.expr})` });
+            results.push({ value: a.value - b.value, expr: `(${a.expr}-${b.expr})` });
+            results.push({ value: a.value * b.value, expr: `(${a.expr}*${b.expr})` });
+            if (Math.abs(b.value) > 1e-12) results.push({ value: a.value / b.value, expr: `(${a.expr}/${b.expr})` });
+            if (Number.isInteger(a.value) && Number.isInteger(b.value) && b.value >= 0 && b.value <= 6) {
+              const p = a.value ** b.value;
+              if (Number.isFinite(p) && Math.abs(p) < 1e6) results.push({ value: p, expr: `(${a.expr}^${b.expr})` });
+            }
           }
         }
       }
+      return results;
     }
 
-    memo.set(key, results);
-    return results;
-  }
+    const solutionCache = {};
 
-  function solveNumber(numStr) {
-    const values = buildValues(numStr.split(""));
-    const expr = values.get("10");
-    return expr ? { expr } : null;
-  }
+    function solveDigits(digits) {
+      if (solutionCache[digits] !== undefined) return solutionCache[digits];
+      const parts = digitsPartitions(digits);
+      for (const part of parts) {
+        const exprs = buildExpressions(part);
+        for (const candidate of exprs) {
+          if (Number.isFinite(candidate.value) && Math.abs(candidate.value - 10) < 1e-9) {
+            solutionCache[digits] = candidate.expr;
+            return candidate.expr;
+          }
+        }
+      }
+      solutionCache[digits] = null;
+      return null;
+    }
 
-  window.checkExpression = checkExpression;
-  window.generateSolvableNumber = generateSolvableNumber;
-  window.checkLiveTrainNumber = checkLiveTrainNumber;
-  window.showSolution = showSolution;
+    function randomFourDigits() {
+      return String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+    }
 
-  const initialSolution = solveNumber(currentNumber);
-  currentSolution = initialSolution ? initialSolution.expr : null;
-  updateUI();
-})();
-</script>
+    function loadRandomSolvable() {
+      let tries = 0;
+      let digits;
+      let solution;
+      do {
+        digits = randomFourDigits();
+        solution = solveDigits(digits);
+        tries++;
+      } while (!solution && tries < 5000);
+      setDigits(digits);
+      currentSolution = solution;
+      seenSolvableSet.add(digits);
+      saveSets();
+      updateStats();
+      setStatus('New solvable number loaded. Build your expression below.');
+    }
+
+    function checkLiveTrainNumber() {
+      const value = prompt('Enter a 4-digit train number:', currentDigits);
+      if (value === null) return;
+      const digits = value.trim();
+      if (!/^\d{4}$/.test(digits)) {
+        setStatus('Enter exactly 4 digits.', 'error');
+        return;
+      }
+      const solution = solveDigits(digits);
+      setDigits(digits);
+      currentSolution = solution;
+      if (solution) {
+        seenSolvableSet.add(digits);
+        saveSets();
+        updateStats();
+        setStatus('This train number is solvable. Try to make 10.', 'success');
+      } else {
+        setStatus('This train number does not appear to be solvable under the game rules.', 'error');
+      }
+    }
+
+    function checkSolution() {
+      const expr = normalize(currentExpression);
+      if (!expr) {
+        setStatus('Build an expression first.', 'error');
+        return;
+      }
+      if (extractDigits(expr) !== currentDigits) {
+        setStatus('Your expression must use the digits in order: ' + currentDigits, 'error');
+        return;
+      }
+      try {
+        const value = evaluateExpression(expr);
+        if (!Number.isFinite(value)) {
+          setStatus('That expression is invalid.', 'error');
+          return;
+        }
+        if (Math.abs(value - 10) < 1e-9) {
+          solvedSet.add(currentDigits);
+          if (currentSolution) seenSolvableSet.add(currentDigits);
+          saveSets();
+          updateStats();
+          setStatus('Correct. You made 10.', 'success');
+        } else {
+          setStatus('That equals ' + String(Number(value.toFixed(6))) + ', not 10.', 'error');
+        }
+      } catch {
+        setStatus('Invalid expression. Check your operators and parentheses.', 'error');
+      }
+    }
+
+    function showSolution() {
+      const solution = currentSolution || solveDigits(currentDigits);
+      currentSolution = solution;
+      if (!solution) {
+        setStatus('No solution found for this train number.', 'error');
+        return;
+      }
+      currentExpression = solution;
+      renderExpression();
+      seenSolvableSet.add(currentDigits);
+      saveSets();
+      updateStats();
+      setStatus('Solution loaded.', 'success');
+    }
+
+    function buildKeypad() {
+      const wrap = document.getElementById('keypad');
+      keypadLayout.forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'key';
+        if ('()+-*/^'.includes(key) && key.length === 1) btn.classList.add('op');
+        if (key === '10') btn.classList.add('action');
+        btn.textContent = key;
+        btn.addEventListener('click', () => {
+          currentExpression += key;
+          renderExpression();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    document.getElementById('randomBtn').addEventListener('click', loadRandomSolvable);
+    document.getElementById('liveBtn').addEventListener('click', checkLiveTrainNumber);
+    document.getElementById('checkBtn').addEventListener('click', checkSolution);
+    document.getElementById('showSolutionBtn').addEventListener('click', showSolution);
+    document.getElementById('clearBtn').addEventListener('click', () => { currentExpression = ''; renderExpression(); });
+    document.getElementById('backBtn').addEventListener('click', () => { currentExpression = currentExpression.slice(0, -1); renderExpression(); });
+
+    buildKeypad();
+    currentSolution = solveDigits(currentDigits);
+    seenSolvableSet.add(currentDigits);
+    saveSets();
+    updateStats();
+    renderExpression();
+  </script>
 </body>
 </html>
