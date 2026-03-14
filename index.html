@@ -4,108 +4,132 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Subway 10</title>
-  <meta name="theme-color" content="#111111" />
+  <meta name="theme-color" content="#0c0f13" />
   <style>
     :root{
-      --bg:#0b0d10;
-      --panel:#12161b;
-      --panel-2:#191f26;
-      --text:#f5f7fa;
-      --muted:#a8b1bd;
-      --border:#2c3642;
+      --bg:#080a0d;
+      --bg2:#11161d;
+      --panel:#12171e;
+      --panel-2:#171e27;
+      --text:#f4f7fb;
+      --muted:#9ba8b8;
+      --border:#273140;
+      --line-1:#00933c;
+      --line-2:#0039a6;
+      --line-3:#fccc0a;
+      --line-4:#ee352e;
+      --line-5:#b933ad;
+      --line-6:#ff6319;
+      --line-7:#6c757d;
+      --blue:#2291ff;
       --green:#35c759;
       --red:#ff5a5f;
-      --blue:#0a84ff;
-      --yellow:#ffd60a;
-      --orange:#ff9f0a;
+      --shadow:0 14px 30px rgba(0,0,0,.32);
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:linear-gradient(180deg,#090b0e 0%,#10151b 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100%}
-    body{padding:16px 14px 32px}
-    .app{max-width:480px;margin:0 auto}
-    .header{
+    html,body{
+      margin:0;
+      min-height:100%;
       background:
-        radial-gradient(circle at top right, rgba(10,132,255,.18), transparent 35%),
-        radial-gradient(circle at top left, rgba(255,159,10,.14), transparent 30%),
-        linear-gradient(180deg,#171b21 0%, #101419 100%);
+        radial-gradient(circle at top, rgba(34,145,255,.08), transparent 28%),
+        linear-gradient(180deg,var(--bg) 0%, var(--bg2) 100%);
+      color:var(--text);
+      font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    }
+    body{padding:14px 12px 28px}
+    .app{max-width:460px;margin:0 auto}
+    .header,
+    .section{
+      background:linear-gradient(180deg,rgba(19,24,31,.98) 0%, rgba(14,18,24,.98) 100%);
       border:1px solid var(--border);
       border-radius:24px;
-      padding:16px 16px 12px;
-      box-shadow:0 10px 30px rgba(0,0,0,.28);
+      box-shadow:var(--shadow);
+    }
+    .header{
+      padding:16px 16px 14px;
       overflow:hidden;
       position:relative;
     }
-    .stripe-row{display:flex;gap:8px;margin-bottom:12px}
-    .stripe{height:8px;border-radius:999px;flex:1}
-    .s1{background:#00933c}.s2{background:#0039a6}.s3{background:#fccc0a}.s4{background:#ee352e}.s5{background:#b933ad}.s6{background:#ff6319}.s7{background:#808183}
-    .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#d6dde7;font-weight:800;margin-bottom:4px}
-    h1{margin:0 0 8px;font-size:28px;line-height:1.05}
-    .sub{color:var(--muted);font-size:14px;line-height:1.35;margin:0}
-    .section{margin-top:14px;background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.2)}
-    .display{
-      background:linear-gradient(180deg,#0d1116,#171d24);
-      border:1px solid #2a3340;
-      border-radius:18px;
-      padding:14px;
-      margin-bottom:12px;
+    .header::after{
+      content:"";
+      position:absolute;
+      inset:auto -60px -60px auto;
+      width:160px;height:160px;border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.07), transparent 65%);
+      pointer-events:none;
     }
-    .display-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+    .stripe-row{display:flex;gap:7px;margin-bottom:12px}
+    .stripe{height:7px;border-radius:999px;flex:1;opacity:.95}
+    .s1{background:var(--line-1)} .s2{background:var(--line-2)} .s3{background:var(--line-3)}
+    .s4{background:var(--line-4)} .s5{background:var(--line-5)} .s6{background:var(--line-6)} .s7{background:var(--line-7)}
+    .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#d4dde8;font-weight:800;margin-bottom:6px}
+    h1{margin:0;font-size:30px;line-height:1.02;letter-spacing:-.03em}
+    .sub{margin:8px 0 0;color:var(--muted);font-size:14px;line-height:1.38;max-width:34ch}
+    .section{margin-top:14px;padding:14px}
+    .display{
+      background:linear-gradient(180deg,#0d1218 0%, #161d25 100%);
+      border:1px solid #2a3442;
+      border-radius:20px;
+      padding:13px;
+      margin-bottom:10px;
+    }
+    .display-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
     .badge{
       display:inline-flex;align-items:center;gap:8px;
-      background:#0c1117;border:1px solid #283241;color:#dbe4ef;
-      padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700;
-      white-space:nowrap;
+      background:#0a0f15;border:1px solid #253141;color:#dae4ef;
+      padding:7px 10px;border-radius:999px;font-size:12px;font-weight:750;
     }
-    .route-bullets{display:inline-flex;gap:6px}
+    .route-bullets{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
     .route{
-      width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
-      font-size:10px;font-weight:800;color:white
+      width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+      font-size:10px;font-weight:900;color:#fff;box-shadow:inset 0 -1px 0 rgba(255,255,255,.15)
     }
     .r-a{background:#0039a6}.r-d{background:#ff6319}.r-7{background:#b933ad}.r-q{background:#fccc0a;color:#111}
-    .number{font-size:56px;line-height:1;font-weight:900;letter-spacing:6px;text-align:center;margin:8px 0 10px;text-shadow:0 3px 12px rgba(0,0,0,.35)}
+    .number{font-size:58px;line-height:1;font-weight:900;letter-spacing:6px;text-align:center;margin:10px 0 8px;text-shadow:0 3px 14px rgba(0,0,0,.4)}
     .caption{text-align:center;color:var(--muted);font-size:13px}
     .input{
-      width:100%;border:1px solid #334153;background:#0d1116;color:var(--text);
-      border-radius:16px;padding:16px 14px;font-size:20px;line-height:1.2;outline:none;
+      width:100%;border:1px solid #344255;background:#0d1218;color:var(--text);
+      border-radius:16px;padding:15px 14px;font-size:20px;outline:none;
     }
-    .input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(10,132,255,.18)}
-    .btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(34,145,255,.18)}
+    .controls{display:grid;grid-template-columns:1.05fr .95fr .95fr;gap:8px;margin-top:10px}
     button{
-      border:none;border-radius:16px;padding:14px 14px;font-size:15px;font-weight:800;cursor:pointer;
-      color:white;background:#253140;box-shadow:0 6px 14px rgba(0,0,0,.18)
+      border:none;border-radius:15px;padding:12px 10px;font-size:14px;font-weight:800;cursor:pointer;
+      color:#fff;background:#24303d;box-shadow:0 7px 16px rgba(0,0,0,.2);min-height:46px
     }
     button:active{transform:translateY(1px)}
-    .primary{background:linear-gradient(180deg,#1f8bff,#0a84ff)}
-    .accent{background:linear-gradient(180deg,#ff7b22,#ff6319)}
-    .ghost{background:#232b35;color:#f1f4f8}
-    .ok{background:linear-gradient(180deg,#44d06c,#35c759)}
+    .primary{background:linear-gradient(180deg,#2b9bff,#157eff)}
+    .accent{background:linear-gradient(180deg,#ff7e2d,#ff6319)}
+    .ghost{background:linear-gradient(180deg,#2a333f,#212933)}
+    .show-wrap{margin-top:12px}
+    .show-btn{width:100%;background:linear-gradient(180deg,#45d26d,#30bf56)}
     .status{
-      margin-top:12px;padding:13px 14px;border-radius:16px;font-weight:700;font-size:14px;line-height:1.35;
+      margin-top:11px;padding:12px 13px;border-radius:15px;font-weight:700;font-size:14px;line-height:1.35;
       border:1px solid transparent;
     }
-    .status.info{background:rgba(10,132,255,.12);color:#beddff;border-color:rgba(10,132,255,.25)}
-    .status.good{background:rgba(53,199,89,.12);color:#b9f1c8;border-color:rgba(53,199,89,.25)}
-    .status.bad{background:rgba(255,90,95,.12);color:#ffc5c7;border-color:rgba(255,90,95,.22)}
-    .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    .status.info{background:rgba(34,145,255,.11);color:#c1e0ff;border-color:rgba(34,145,255,.22)}
+    .status.good{background:rgba(53,199,89,.12);color:#bef3cb;border-color:rgba(53,199,89,.24)}
+    .status.bad{background:rgba(255,90,95,.12);color:#ffc8ca;border-color:rgba(255,90,95,.22)}
+    .stats{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
     .stat{background:var(--panel-2);border:1px solid var(--border);border-radius:16px;padding:12px}
-    .stat .k{font-size:12px;color:var(--muted);margin-bottom:6px}
-    .stat .v{font-size:22px;font-weight:900;line-height:1.1}
-    .stat .s{font-size:12px;color:var(--muted);margin-top:4px}
+    .k{font-size:12px;color:var(--muted);margin-bottom:6px}
+    .v{font-size:22px;font-weight:900;line-height:1.05}
+    .s{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.3}
     .solution{
-      margin-top:12px;padding:14px;border-radius:16px;background:#0f141a;border:1px dashed #3b4757;
-      color:#f6f8fb;display:none
+      margin-top:12px;padding:14px;border-radius:16px;background:#0f141b;border:1px dashed #3a4758;
+      color:#f5f7fb;display:none
     }
     .solution code{
-      display:block;background:#0a0d12;border:1px solid #2a3442;color:#ffd60a;border-radius:12px;
-      padding:12px;font-size:18px;word-break:break-word;margin-top:8px
+      display:block;background:#090d12;border:1px solid #2b3543;color:#ffd60a;border-radius:12px;
+      padding:11px;font-size:18px;word-break:break-word;margin-top:8px
     }
-    .footer-rules{margin-top:14px;color:var(--muted);font-size:13px;line-height:1.5}
-    .footer-rules b{color:#eef2f8}
-    .tiny{font-size:11px;color:#8f99a6}
-    @media (max-width:380px){
-      .number{font-size:48px;letter-spacing:4px}
-      .btn-grid{grid-template-columns:1fr}
-      .stats{grid-template-columns:1fr 1fr}
+    .rules{margin-top:14px;color:var(--muted);font-size:13px;line-height:1.5}
+    .rules b{color:#eff4fa}
+    .tiny{font-size:11px;color:#8794a4;margin-top:8px}
+    @media (max-width:390px){
+      .number{font-size:50px;letter-spacing:4px}
+      .controls{grid-template-columns:1fr 1fr}
+      .controls .primary{grid-column:1 / -1}
     }
   </style>
 </head>
@@ -117,7 +141,7 @@
       </div>
       <div class="eyebrow">Commute puzzle</div>
       <h1>Subway 10</h1>
-      <p class="sub">Look at the train car number. Keep the digits in order. Make it equal <b>10</b>.</p>
+      <p class="sub">Look at the car number, keep the digits in order, and make it equal <b>10</b>.</p>
     </div>
 
     <div class="section">
@@ -137,13 +161,13 @@
 
       <input id="expressionInput" class="input" type="text" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Example: (2*(3+6))-8" />
 
-      <div class="btn-grid" style="margin-top:10px">
+      <div class="controls">
         <button class="primary" onclick="checkExpression()">Check solution</button>
         <button class="accent" onclick="generateSolvableNumber()">Random solvable</button>
-        <button class="ghost" onclick="checkLiveTrainNumber()">Check live train number</button>
+        <button class="ghost" onclick="checkLiveTrainNumber()">Live train #</button>
       </div>
 
-      <div id="status" class="status info">2368 works. Try solving it yourself, or use <b>Show solution</b> at the bottom.</div>
+      <div id="status" class="status info">2368 works. Try solving it yourself, or reveal it at the bottom.</div>
 
       <div class="stats">
         <div class="stat">
@@ -163,14 +187,14 @@
         <code id="solutionText"></code>
       </div>
 
-      <div style="margin-top:12px">
-        <button class="ok" onclick="showSolution()">Show solution</button>
+      <div class="show-wrap">
+        <button class="show-btn" onclick="showSolution()">Show solution</button>
       </div>
     </div>
 
-    <div class="section footer-rules">
+    <div class="section rules">
       <div><b>Rules:</b> Use all 4 digits exactly once, keep them in order, and use <b>+, -, *, /, ^</b> plus parentheses. Concatenation like <b>23</b> is allowed.</div>
-      <div class="tiny" style="margin-top:8px">Progress is stored on this device. The percentage tracks how many unique solvable train numbers you’ve completed out of all 7,437 solvable combinations.</div>
+      <div class="tiny">Progress is stored on this device. The percentage tracks how many unique solvable train numbers you’ve completed out of all 7,437 solvable combinations.</div>
     </div>
   </div>
 
@@ -180,9 +204,9 @@
   let currentNumber = "2368";
   let currentSolution = "(2*(3+6))-8";
   let currentMode = "manual";
-  let memo = new Map();
+  const memo = new Map();
 
-  const storageKey = "subway10_stats_v4";
+  const storageKey = "subway10_stats_v5";
   const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
   const solvedSet = new Set(Array.isArray(saved.solvedNumbers) ? saved.solvedNumbers : []);
 
@@ -194,9 +218,9 @@
 
   function updateUI() {
     $("trainNumber").textContent = currentNumber;
-    $("modeCaption").textContent =
-      currentMode === "random" ? "Guaranteed solvable random number" :
-      "Type your expression below";
+    $("modeCaption").textContent = currentMode === "random"
+      ? "Guaranteed solvable random number"
+      : "Type your expression below";
     $("solvedCount").textContent = solvedSet.size.toLocaleString();
     $("solvedPercent").textContent = ((solvedSet.size / TOTAL_SOLVABLE_COMBOS) * 100).toFixed(2) + "% of all solvable combos";
   }
@@ -205,16 +229,6 @@
     const el = $("status");
     el.className = "status " + type;
     el.innerHTML = message;
-  }
-
-  function setCurrentNumber(num, mode="manual") {
-    currentNumber = num;
-    currentMode = mode;
-    $("expressionInput").value = "";
-    hideSolution();
-    const solution = solveNumber(currentNumber);
-    currentSolution = solution ? solution.expr : null;
-    updateUI();
   }
 
   function normalizeExpression(expr) {
@@ -230,17 +244,39 @@
     return Function('"use strict"; return (' + jsExpr + ')')();
   }
 
+  function prettyNumber(n) {
+    if (Math.abs(n - Math.round(n)) < 1e-9) return String(Math.round(n));
+    return Number(n.toFixed(6)).toString();
+  }
+
+  function hideSolution() {
+    $("solutionBox").style.display = "none";
+    $("solutionText").textContent = "";
+  }
+
+  function setCurrentNumber(num, mode="manual") {
+    currentNumber = num;
+    currentMode = mode;
+    $("expressionInput").value = "";
+    hideSolution();
+    const solution = solveNumber(currentNumber);
+    currentSolution = solution ? solution.expr : null;
+    updateUI();
+  }
+
   function checkExpression() {
     const raw = $("expressionInput").value.trim();
     if (!raw) {
       setStatus("Enter an expression first.", "bad");
       return;
     }
+
     const normalized = normalizeExpression(raw);
     if (digitsOnly(normalized) !== currentNumber) {
       setStatus("Digits must stay in order and match <b>" + currentNumber + "</b> exactly.", "bad");
       return;
     }
+
     try {
       const result = evaluateExpression(normalized);
       if (!Number.isFinite(result)) {
@@ -260,11 +296,6 @@
     }
   }
 
-  function prettyNumber(n) {
-    if (Math.abs(n - Math.round(n)) < 1e-9) return String(Math.round(n));
-    return Number(n.toFixed(6)).toString();
-  }
-
   function checkLiveTrainNumber() {
     const value = prompt("Enter the 4-digit train car number:", currentNumber);
     if (value === null) return;
@@ -273,6 +304,7 @@
       setStatus("Please enter exactly 4 digits.", "bad");
       return;
     }
+
     const solution = solveNumber(cleaned);
     setCurrentNumber(cleaned, "manual");
     if (solution) {
@@ -297,7 +329,6 @@
   }
 
   function showSolution() {
-    const box = $("solutionBox");
     if (!currentSolution) {
       const solution = solveNumber(currentNumber);
       currentSolution = solution ? solution.expr : null;
@@ -307,60 +338,8 @@
       return;
     }
     $("solutionText").textContent = currentSolution + " = 10";
-    box.style.display = "block";
-    box.scrollIntoView({behavior:"smooth", block:"nearest"});
-  }
-
-  function hideSolution() {
-    $("solutionBox").style.display = "none";
-    $("solutionText").textContent = "";
-  }
-
-  function buildValues(digits) {
-    const key = digits.join("");
-    if (memo.has(key)) return memo.get(key);
-
-    const results = new Map();
-
-    function add(val, expr) {
-      if (!Number.isFinite(val)) return;
-      if (Math.abs(val) > 1e9) return;
-      const rounded = roundKey(val);
-      if (!results.has(rounded)) results.set(rounded, expr);
-    }
-
-    const joined = Number(digits.join(""));
-    add(joined, digits.join(""));
-
-    if (digits.length === 1) {
-      memo.set(key, results);
-      return results;
-    }
-
-    for (let i = 1; i < digits.length; i++) {
-      const left = buildValues(digits.slice(0, i));
-      const right = buildValues(digits.slice(i));
-
-      for (const [lvKey, le] of left.entries()) {
-        const lv = Number(lvKey);
-        for (const [rvKey, re] of right.entries()) {
-          const rv = Number(rvKey);
-
-          add(lv + rv, `(${le}+${re})`);
-          add(lv - rv, `(${le}-${re})`);
-          add(lv * rv, `(${le}*${re})`);
-          if (Math.abs(rv) > 1e-12) add(lv / rv, `(${le}/${re})`);
-
-          if (isReasonableExponent(lv, rv)) {
-            const p = Math.pow(lv, rv);
-            if (Number.isFinite(p)) add(p, `(${le}^${re})`);
-          }
-        }
-      }
-    }
-
-    memo.set(key, results);
-    return results;
+    $("solutionBox").style.display = "block";
+    $("solutionBox").scrollIntoView({behavior:"smooth", block:"nearest"});
   }
 
   function roundKey(n) {
@@ -381,9 +360,52 @@
     return Number.isFinite(p) && Math.abs(p) <= 1e9;
   }
 
+  function buildValues(digits) {
+    const key = digits.join("");
+    if (memo.has(key)) return memo.get(key);
+
+    const results = new Map();
+
+    function add(val, expr) {
+      if (!Number.isFinite(val)) return;
+      if (Math.abs(val) > 1e9) return;
+      const rounded = roundKey(val);
+      if (!results.has(rounded)) results.set(rounded, expr);
+    }
+
+    add(Number(digits.join("")), digits.join(""));
+
+    if (digits.length === 1) {
+      memo.set(key, results);
+      return results;
+    }
+
+    for (let i = 1; i < digits.length; i++) {
+      const left = buildValues(digits.slice(0, i));
+      const right = buildValues(digits.slice(i));
+
+      for (const [lvKey, le] of left.entries()) {
+        const lv = Number(lvKey);
+        for (const [rvKey, re] of right.entries()) {
+          const rv = Number(rvKey);
+          add(lv + rv, `(${le}+${re})`);
+          add(lv - rv, `(${le}-${re})`);
+          add(lv * rv, `(${le}*${re})`);
+          if (Math.abs(rv) > 1e-12) add(lv / rv, `(${le}/${re})`);
+          if (isReasonableExponent(lv, rv)) {
+            const p = Math.pow(lv, rv);
+            if (Number.isFinite(p)) add(p, `(${le}^${re})`);
+          }
+        }
+      }
+    }
+
+    memo.set(key, results);
+    return results;
+  }
+
   function solveNumber(numStr) {
-    const digits = numStr.split("");
-    const values = buildValues(digits);
+    const values = buildValues(numStr.split(""));
     const expr = values.get("10");
     return expr ? { expr } : null;
   }
