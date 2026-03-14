@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Subway 10</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #11182d;
+      --text: #f3f7ff;
+      --muted: #aeb9d3;
+      --line: rgba(255,255,255,.10);
+      --blue: #0039a6;
+      --orange: #ff6319;
+      --yellow: #fccc0a;
+      --green: #00a84f;
+      --red: #ee352e;
+      --shadow: 0 18px 40px rgba(0,0,0,.35);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle at top, #132042 0%, var(--bg) 52%);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body { min-height: 100vh; }
+
+    .wrap {
+      width: 100%;
+      max-width: 560px;
+      margin: 0 auto;
+      padding: max(12px, env(safe-area-inset-top)) 12px max(18px, env(safe-area-inset-bottom));
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(0,57,166,.96), rgba(255,99,25,.95));
+      border-radius: 26px;
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -32px -42px auto;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.09);
+      filter: blur(4px);
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: rgba(255,255,255,.15);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+    }
+
+    .train-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #111;
+      border: 3px solid #fff;
+      font-weight: 800;
+      color: #fff;
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      font-size: 24px;
+      line-height: 1.06;
+      margin: 0 0 6px;
+      letter-spacing: -.02em;
+    }
+
+    .sub {
+      margin: 0;
+      color: rgba(255,255,255,.9);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .number-card {
+      margin-top: 12px;
+      background: rgba(10,12,18,.82);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 700;
+    }
+
+    .digits {
+      margin-top: 6px;
+      font-size: clamp(40px, 13vw, 66px);
+      font-weight: 900;
+      letter-spacing: .1em;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      text-shadow: 0 0 16px rgba(252,204,10,.18);
+    }
+
+    .rail {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow: auto;
+      padding-bottom: 2px;
+      scrollbar-width: none;
+    }
+    .rail::-webkit-scrollbar { display: none; }
+    .line {
+      border-radius: 999px;
+      min-width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: #fff;
+      border: 3px solid rgba(255,255,255,.95);
+      box-shadow: inset 0 -2px 0 rgba(0,0,0,.18);
+    }
+    .a { background: #2850ad; }
+    .d { background: #ff6319; }
+    .n { background: #fccc0a; color: #111; }
+    .g { background: #6cbe45; }
+    .l { background: #a7a9ac; }
+    .s { background: #808183; }
+
+    .card {
+      background: linear-gradient(180deg, rgba(17,24,45,.96), rgba(14,21,38,.96));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px;
+      box-shadow: var(--shadow);
+      margin-top: 12px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -.01em;
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .row { display: grid; gap: 9px; }
+    .row.two { grid-template-columns: 1fr 1fr; }
+    .row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    button, input {
+      width: 100%;
+      border-radius: 16px;
+      border: 0;
+      min-height: 50px;
+      padding: 13px 14px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    input {
+      background: rgba(255,255,255,.07);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.08);
+      outline: none;
+    }
+    input::placeholder { color: #7f8cad; }
+    input:focus { border-color: rgba(252,204,10,.75); box-shadow: 0 0 0 3px rgba(252,204,10,.15); }
+
+    button {
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      transition: transform .06s ease;
+    }
+    button:active { transform: translateY(1px) scale(.995); }
+
+    .primary { background: linear-gradient(180deg, #ff7a3d, #ff6319); }
+    .secondary { background: linear-gradient(180deg, #1752cf, #0039a6); }
+    .successBtn { background: linear-gradient(180deg, #00b95a, #008f44); }
+    .ghost { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.09); }
+
+    .status {
+      margin-top: 10px;
+      padding: 12px 13px;
+      border-radius: 16px;
+      line-height: 1.35;
+      font-size: 14px;
+      border: 1px solid transparent;
+      word-break: break-word;
+    }
+    .status.info { background: rgba(0,57,166,.16); color: #bed0ff; border-color: rgba(78,126,255,.25); }
+    .status.good { background: rgba(0,168,79,.14); color: #bff4d6; border-color: rgba(0,168,79,.3); }
+    .status.bad { background: rgba(238,53,46,.14); color: #ffc7c5; border-color: rgba(238,53,46,.28); }
+    .status.warn { background: rgba(252,204,10,.14); color: #ffe88f; border-color: rgba(252,204,10,.28); }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 9px;
+      margin-top: 12px;
+    }
+    .stat {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 10px 8px;
+      text-align: center;
+    }
+    .stat .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .09em; font-weight: 700; }
+    .stat .v { margin-top: 5px; font-size: 22px; font-weight: 900; font-variant-numeric: tabular-nums; }
+
+    details.rules {
+      margin-top: 12px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      padding: 12px 14px;
+    }
+    details.rules summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--text);
+    }
+    details.rules p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    @media (max-width: 420px) {
+      .row.two, .row.three { grid-template-columns: 1fr; }
+      .digits { letter-spacing: .07em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="topline">
+        <div class="pill"><span class="train-badge">M</span> Subway 10</div>
+        <div class="pill">NYC puzzle mode</div>
+      </div>
+      <h1>Make the train number equal 10.</h1>
+      <p class="sub">Phone-friendly subway math. Keep the digits in order and use all four once.</p>
+      <div class="number-card">
+        <div class="label">Current train number</div>
+        <div id="digits" class="digits">6446</div>
+      </div>
+      <div class="rail" aria-hidden="true">
+        <div class="line a">A</div>
+        <div class="line d">D</div>
+        <div class="line n">N</div>
+        <div class="line g">G</div>
+        <div class="line l">L</div>
+        <div class="line s">7</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-title">
+        <h2>Play</h2>
+        <p class="hint">Type your solution here first.</p>
+      </div>
+
+      <div class="row" style="margin-top:8px;">
+        <input id="exprInput" placeholder="Type your expression" value="((6-4)^4)-6" />
+      </div>
+
+      <div class="row two" style="margin-top:9px;">
+        <button class="successBtn" id="solveBtn">Check expression</button>
+        <button class="ghost" id="solutionBtn">Show solution</button>
+      </div>
+
+      <div class="row two" style="margin-top:9px;">
+        <button class="primary" id="randomBtn">Generate solvable number</button>
+        <button class="secondary" id="checkBtn">Check live train number</button>
+      </div>
+
+      <div class="row" style="margin-top:9px;">
+        <input id="trainInput" inputmode="numeric" maxlength="4" placeholder="Enter 4 digits, like 2368" />
+      </div>
+
+      <div class="row two" style="margin-top:9px;">
+        <button class="ghost" id="clearBtn">Clear</button>
+        <button class="ghost" id="useInputBtn">Load typed number</button>
+      </div>
+
+      <div id="statusBox" class="status info">Example loaded. You can solve it, check if a live train number works, or reveal one valid solution.</div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Solved</div><div class="v" id="solvedCount">0</div></div>
+        <div class="stat"><div class="k">Attempts</div><div class="v" id="attemptCount">0</div></div>
+        <div class="stat"><div class="k">Checks</div><div class="v" id="checkCount">0</div></div>
+      </div>
+    </section>
+
+    <details class="rules">
+      <summary>Rules and tips</summary>
+      <p>
+        Digits must stay in order. Use all 4 digits exactly once. Allowed operators: +, -, *, /, ^ and parentheses. Grouping is allowed, so 64 is fine as long as the order stays the same. The live-number check stays spoiler-free, while the solution button reveals one valid answer.
+      </p>
+    </details>
+
+    <div class="footer-note">NYC subway theme, spoiler-free solvable checks, and now a reveal button when you get stuck.</div>
+  </div>
+
+  <script>
+    const TARGET_NUM = 10n;
+    const TARGET_DEN = 1n;
+    const EXP_LIMIT = 20;
+    const ABS_LIMIT = 100000000n;
+
+    let currentNumber = '6446';
+    let solvedCount = 0;
+    let attemptCount = 0;
+    let checkCount = 0;
+
+    const digitsEl = document.getElementById('digits');
+    const trainInput = document.getElementById('trainInput');
+    const exprInput = document.getElementById('exprInput');
+    const solvedCountEl = document.getElementById('solvedCount');
+    const attemptCountEl = document.getElementById('attemptCount');
+    const checkCountEl = document.getElementById('checkCount');
+    const statusBox = document.getElementById('statusBox');
+
+    const partitionMemo = new Map();
+    const resultMemo = new Map();
+    const exprMemo = new Map();
+    const combineMemo = new Map();
+    const solvableMemo = new Map();
+    const solutionMemo = new Map();
+    const solvableList = [];
+
+    function setStatus(message, kind) {
+      statusBox.className = `status ${kind}`;
+      statusBox.textContent = message;
+    }
+
+    function updateView() {
+      digitsEl.textContent = currentNumber;
+      solvedCountEl.textContent = String(solvedCount);
+      attemptCountEl.textContent = String(attemptCount);
+      checkCountEl.textContent = String(checkCount);
+    }
+
+    function gcd(a, b) {
+      a = a < 0n ? -a : a;
+      b = b < 0n ? -b : b;
+      while (b !== 0n) {
+        const t = a % b;
+        a = b;
+        b = t;
+      }
+      return a;
+    }
+
+    function normalizeFrac(n, d) {
+      if (d === 0n) return null;
+      if (d < 0n) { n = -n; d = -d; }
+      if (n === 0n) return [0n, 1n];
+      const g = gcd(n, d);
+      n /= g;
+      d /= g;
+      if ((n < 0n ? -n : n) > ABS_LIMIT || d > ABS_LIMIT) return null;
+      return [n, d];
+    }
+
+    function addFrac(a, b) { return normalizeFrac(a[0] * b[1] + b[0] * a[1], a[1] * b[1]); }
+    function subFrac(a, b) { return normalizeFrac(a[0] * b[1] - b[0] * a[1], a[1] * b[1]); }
+    function mulFrac(a, b) { return normalizeFrac(a[0] * b[0], a[1] * b[1]); }
+    function divFrac(a, b) {
+      if (b[0] === 0n) return null;
+      return normalizeFrac(a[0] * b[1], a[1] * b[0]);
+    }
+
+    function powBigInt(base, exp) {
+      let result = 1n;
+      let b = base;
+      let e = BigInt(exp);
+      while (e > 0n) {
+        if (e % 2n === 1n) {
+          result *= b;
+          if ((result < 0n ? -result : result) > ABS_LIMIT * ABS_LIMIT) return null;
+        }
+        e /= 2n;
+        if (e > 0n) {
+          b *= b;
+          if ((b < 0n ? -b : b) > ABS_LIMIT * ABS_LIMIT) return null;
+        }
+      }
+      return result;
+    }
+
+    function powFrac(a, exponent) {
+      if (!Number.isInteger(exponent) || exponent < -EXP_LIMIT || exponent > EXP_LIMIT) return null;
+      if (exponent === 0) return [1n, 1n];
+      if (exponent < 0) {
+        if (a[0] === 0n) return null;
+        const flipped = [a[1], a[0]];
+        return powFrac(flipped, -exponent);
+      }
+      const numPow = powBigInt(a[0], exponent);
+      const denPow = powBigInt(a[1], exponent);
+      if (numPow === null || denPow === null) return null;
+      return normalizeFrac(numPow, denPow);
+    }
+
+    function fracKey(f) { return `${f[0]}/${f[1]}`; }
+
+    function partitions(str) {
+      if (partitionMemo.has(str)) return partitionMemo.get(str);
+      const out = [];
+      for (let mask = 0; mask < (1 << (str.length - 1)); mask++) {
+        const parts = [];
+        let start = 0;
+        for (let i = 0; i < str.length - 1; i++) {
+          if ((mask >> i) & 1) {
+            parts.push(str.slice(start, i + 1));
+            start = i + 1;
+          }
+        }
+        parts.push(str.slice(start));
+        out.push(parts);
+      }
+      partitionMemo.set(str, out);
+      return out;
+    }
+
+    function combine(a, b) {
+      const memoKey = `${fracKey(a)}|${fracKey(b)}`;
+      if (combineMemo.has(memoKey)) return combineMemo.get(memoKey);
+      const results = new Map();
+      const maybeAdd = (value, expr) => {
+        if (value && !results.has(fracKey(value))) results.set(fracKey(value), { value, expr });
+      };
+      maybeAdd(addFrac(a, b), null);
+      maybeAdd(subFrac(a, b), null);
+      maybeAdd(mulFrac(a, b), null);
+      maybeAdd(divFrac(a, b), null);
+      if (b[1] === 1n) {
+        const exp = Number(b[0]);
+        maybeAdd(powFrac(a, exp), null);
+      }
+      const arr = Array.from(results.values()).map(x => x.value);
+      combineMemo.set(memoKey, arr);
+      return arr;
+    }
+
+    function computeResults(parts) {
+      const key = parts.join('|');
+      if (resultMemo.has(key)) return resultMemo.get(key);
+      let result;
+      if (parts.length === 1) {
+        result = [[BigInt(parseInt(parts[0], 10)), 1n]];
+      } else {
+        const acc = new Map();
+        for (let i = 1; i < parts.length; i++) {
+          const left = computeResults(parts.slice(0, i));
+          const right = computeResults(parts.slice(i));
+          for (const a of left) {
+            for (const b of right) {
+              for (const c of combine(a, b)) {
+                acc.set(fracKey(c), c);
+              }
+            }
+          }
+        }
+        result = Array.from(acc.values());
+      }
+      resultMemo.set(key, result);
+      return result;
+    }
+
+    function computeExprMap(parts) {
+      const key = parts.join('|');
+      if (exprMemo.has(key)) return exprMemo.get(key);
+
+      let result;
+      if (parts.length === 1) {
+        const value = [BigInt(parseInt(parts[0], 10)), 1n];
+        result = new Map([[fracKey(value), parts[0]]]);
+      } else {
+        result = new Map();
+        for (let i = 1; i < parts.length; i++) {
+          const leftMap = computeExprMap(parts.slice(0, i));
+          const rightMap = computeExprMap(parts.slice(i));
+          for (const [lk, le] of leftMap.entries()) {
+            const [ln, ld] = lk.split('/').map(BigInt);
+            const a = [ln, ld];
+            for (const [rk, re] of rightMap.entries()) {
+              const [rn, rd] = rk.split('/').map(BigInt);
+              const b = [rn, rd];
+
+              const add = addFrac(a, b);
+              if (add && !result.has(fracKey(add))) result.set(fracKey(add), `(${le}+${re})`);
+
+              const sub = subFrac(a, b);
+              if (sub && !result.has(fracKey(sub))) result.set(fracKey(sub), `(${le}-${re})`);
+
+              const mul = mulFrac(a, b);
+              if (mul && !result.has(fracKey(mul))) result.set(fracKey(mul), `(${le}*${re})`);
+
+              const div = divFrac(a, b);
+              if (div && !result.has(fracKey(div))) result.set(fracKey(div), `(${le}/${re})`);
+
+              if (b[1] === 1n) {
+                const exp = Number(b[0]);
+                const pow = powFrac(a, exp);
+                if (pow && !result.has(fracKey(pow))) result.set(fracKey(pow), `(${le}^${re})`);
+              }
+            }
+          }
+        }
+      }
+
+      exprMemo.set(key, result);
+      return result;
+    }
+
+    function findSolution(numberStr) {
+      if (solutionMemo.has(numberStr)) return solutionMemo.get(numberStr);
+      let found = null;
+      for (const parts of partitions(numberStr)) {
+        const exprMap = computeExprMap(parts);
+        const expr = exprMap.get(`${TARGET_NUM}/${TARGET_DEN}`);
+        if (expr) {
+          found = expr;
+          break;
+        }
+      }
+      solutionMemo.set(numberStr, found);
+      return found;
+    }
+
+    function isSolvable(numberStr) {
+      if (solvableMemo.has(numberStr)) return solvableMemo.get(numberStr);
+      const ok = !!findSolution(numberStr);
+      solvableMemo.set(numberStr, ok);
+      return ok;
+    }
+
+    function buildSolvableList() {
+      for (let i = 0; i < 10000; i++) {
+        const numberStr = String(i).padStart(4, '0');
+        if (isSolvable(numberStr)) solvableList.push(numberStr);
+      }
+    }
+
+    function randomSolvableNumber() {
+      const idx = Math.floor(Math.random() * solvableList.length);
+      return solvableList[idx];
+    }
+
+    function cleanNumberInput(raw) {
+      return raw.replace(/\D/g, '').slice(0, 4);
+    }
+
+    function setCurrentNumber(numberStr) {
+      currentNumber = numberStr;
+      updateView();
+    }
+
+    function extractDigitsOnly(expr) {
+      return expr.replace(/[^0-9]/g, '');
+    }
+
+    function evaluateExpression(expr) {
+      const jsExpr = expr.replace(/\^/g, '**');
+      return Function(`"use strict"; return (${jsExpr});`)();
+    }
+
+    function loadTypedNumber() {
+      const value = cleanNumberInput(trainInput.value.trim());
+      if (value.length !== 4) {
+        setStatus('Enter exactly 4 digits first.', 'bad');
+        return null;
+      }
+      setCurrentNumber(value);
+      exprInput.value = '';
+      return value;
+    }
+
+    document.getElementById('randomBtn').addEventListener('click', () => {
+      const next = randomSolvableNumber();
+      setCurrentNumber(next);
+      exprInput.value = '';
+      setStatus(`Loaded ${next}. It is definitely solvable.`, 'good');
+    });
+
+    document.getElementById('checkBtn').addEventListener('click', () => {
+      const value = loadTypedNumber();
+      checkCount += 1;
+      updateView();
+      if (!value) return;
+
+      const ok = isSolvable(value);
+      if (ok) {
+        setStatus(`${value} works. There is at least one valid way to make 10.`, 'good');
+      } else {
+        setStatus(`${value} does not work under the current rules.`, 'warn');
+      }
+    });
+
+    document.getElementById('useInputBtn').addEventListener('click', () => {
+      const value = loadTypedNumber();
+      if (value) setStatus(`${value} loaded. Now try solving it above.`, 'info');
+    });
+
+    document.getElementById('solutionBtn').addEventListener('click', () => {
+      const solution = findSolution(currentNumber);
+      if (solution) {
+        exprInput.value = solution;
+        setStatus(`One valid solution for ${currentNumber}: ${solution}`, 'good');
+      } else {
+        setStatus(`${currentNumber} is not solvable under the current rules.`, 'warn');
+      }
+    });
+
+    document.getElementById('solveBtn').addEventListener('click', () => {
+      const input = exprInput.value.trim();
+      attemptCount += 1;
+      updateView();
+
+      if (!input) {
+        setStatus('Enter an expression first.', 'bad');
+        return;
+      }
+
+      if (extractDigitsOnly(input) !== currentNumber) {
+        setStatus(`Use all digits exactly once and keep them in order: ${currentNumber}.`, 'bad');
+        return;
+      }
+
+      try {
+        const value = evaluateExpression(input);
+        if (!Number.isFinite(value)) {
+          setStatus('That expression is invalid.', 'bad');
+          return;
+        }
+        if (Math.abs(value - 10) < 1e-9) {
+          solvedCount += 1;
+          updateView();
+          setStatus('Correct. You made 10.', 'good');
+        } else {
+          setStatus(`Not quite. That equals ${value}, not 10.`, 'bad');
+        }
+      } catch (err) {
+        setStatus('Invalid expression. Check your parentheses and operators.', 'bad');
+      }
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      exprInput.value = '';
+      setStatus('Expression cleared.', 'info');
+    });
+
+    trainInput.addEventListener('input', () => {
+      trainInput.value = cleanNumberInput(trainInput.value);
+    });
+
+    buildSolvableList();
+    updateView();
+  </script>
+</body>
+</html>
