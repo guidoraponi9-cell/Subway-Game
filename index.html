@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Subway 10 NYC</title>
+  <title>Subway 10</title>
   <meta name="theme-color" content="#111111" />
   <style>
     :root{
@@ -26,24 +26,20 @@
     .header{
       background:
         radial-gradient(circle at top right, rgba(10,132,255,.18), transparent 35%),
-        radial-gradient(circle at top left, rgba(255,159,10,.15), transparent 30%),
+        radial-gradient(circle at top left, rgba(255,159,10,.14), transparent 30%),
         linear-gradient(180deg,#171b21 0%, #101419 100%);
       border:1px solid var(--border);
       border-radius:24px;
-      padding:16px 16px 14px;
+      padding:16px 16px 12px;
       box-shadow:0 10px 30px rgba(0,0,0,.28);
       overflow:hidden;
       position:relative;
     }
-    .header:before{
-      content:"";
-      position:absolute;left:-10%;right:-10%;top:58px;height:7px;
-      background:linear-gradient(90deg,#00933c 0 14%, #0039a6 14% 28%, #fccc0a 28% 42%, #ee352e 42% 56%, #b933ad 56% 70%, #ff6319 70% 84%, #808183 84% 100%);
-      border-radius:999px;
-      opacity:.95;
-    }
-    .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#d6dde7;font-weight:800}
-    h1{margin:6px 0 30px;font-size:28px;line-height:1.05}
+    .stripe-row{display:flex;gap:8px;margin-bottom:12px}
+    .stripe{height:8px;border-radius:999px;flex:1}
+    .s1{background:#00933c}.s2{background:#0039a6}.s3{background:#fccc0a}.s4{background:#ee352e}.s5{background:#b933ad}.s6{background:#ff6319}.s7{background:#808183}
+    .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#d6dde7;font-weight:800;margin-bottom:4px}
+    h1{margin:0 0 8px;font-size:28px;line-height:1.05}
     .sub{color:var(--muted);font-size:14px;line-height:1.35;margin:0}
     .section{margin-top:14px;background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:14px;box-shadow:0 8px 20px rgba(0,0,0,.2)}
     .display{
@@ -91,16 +87,10 @@
     .status.good{background:rgba(53,199,89,.12);color:#b9f1c8;border-color:rgba(53,199,89,.25)}
     .status.bad{background:rgba(255,90,95,.12);color:#ffc5c7;border-color:rgba(255,90,95,.22)}
     .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    .stat{
-      background:var(--panel-2);border:1px solid var(--border);border-radius:16px;padding:12px
-    }
+    .stat{background:var(--panel-2);border:1px solid var(--border);border-radius:16px;padding:12px}
     .stat .k{font-size:12px;color:var(--muted);margin-bottom:6px}
     .stat .v{font-size:22px;font-weight:900;line-height:1.1}
     .stat .s{font-size:12px;color:var(--muted);margin-top:4px}
-    .daily{
-      display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px
-    }
-    .mini{font-size:12px;color:var(--muted)}
     .solution{
       margin-top:12px;padding:14px;border-radius:16px;background:#0f141a;border:1px dashed #3b4757;
       color:#f6f8fb;display:none
@@ -122,7 +112,10 @@
 <body>
   <div class="app">
     <div class="header">
-      <div class="eyebrow">NYC commute puzzle</div>
+      <div class="stripe-row" aria-hidden="true">
+        <div class="stripe s1"></div><div class="stripe s2"></div><div class="stripe s3"></div><div class="stripe s4"></div><div class="stripe s5"></div><div class="stripe s6"></div><div class="stripe s7"></div>
+      </div>
+      <div class="eyebrow">Commute puzzle</div>
       <h1>Subway 10</h1>
       <p class="sub">Look at the train car number. Keep the digits in order. Make it equal <b>10</b>.</p>
     </div>
@@ -148,7 +141,6 @@
         <button class="primary" onclick="checkExpression()">Check solution</button>
         <button class="accent" onclick="generateSolvableNumber()">Random solvable</button>
         <button class="ghost" onclick="checkLiveTrainNumber()">Check live train number</button>
-        <button class="ghost" onclick="loadDailyPuzzle()">Daily puzzle</button>
       </div>
 
       <div id="status" class="status info">2368 works. Try solving it yourself, or use <b>Show solution</b> at the bottom.</div>
@@ -160,9 +152,9 @@
           <div class="s" id="solvedPercent">0.00% of all solvable combos</div>
         </div>
         <div class="stat">
-          <div class="k">Daily puzzle</div>
-          <div class="v" id="dailyNumber">—</div>
-          <div class="s" id="dailyStatus">Not loaded yet</div>
+          <div class="k">Solvable combos total</div>
+          <div class="v">7,437</div>
+          <div class="s">Out of 10,000 four-digit combinations</div>
         </div>
       </div>
 
@@ -177,13 +169,8 @@
     </div>
 
     <div class="section footer-rules">
-      <div class="daily">
-        <div>
-          <div class="mini">Rules</div>
-          <div><b>Use all 4 digits exactly once</b>, keep them in order, and use <b>+, -, *, /, ^</b> plus parentheses. Concatenation like <b>23</b> is allowed.</div>
-        </div>
-      </div>
-      <div class="tiny">Progress is stored on this device. “% of solvable combos” is based on 7,437 solvable 4-digit combinations.</div>
+      <div><b>Rules:</b> Use all 4 digits exactly once, keep them in order, and use <b>+, -, *, /, ^</b> plus parentheses. Concatenation like <b>23</b> is allowed.</div>
+      <div class="tiny" style="margin-top:8px">Progress is stored on this device. The percentage tracks how many unique solvable train numbers you’ve completed out of all 7,437 solvable combinations.</div>
     </div>
   </div>
 
@@ -195,16 +182,12 @@
   let currentMode = "manual";
   let memo = new Map();
 
-  const storageKey = "subway10_stats_v3";
+  const storageKey = "subway10_stats_v4";
   const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
   const solvedSet = new Set(Array.isArray(saved.solvedNumbers) ? saved.solvedNumbers : []);
-  const dailySolved = saved.dailySolved || {};
 
   function saveStats() {
-    localStorage.setItem(storageKey, JSON.stringify({
-      solvedNumbers: [...solvedSet],
-      dailySolved
-    }));
+    localStorage.setItem(storageKey, JSON.stringify({ solvedNumbers: [...solvedSet] }));
   }
 
   function $(id){ return document.getElementById(id); }
@@ -212,15 +195,10 @@
   function updateUI() {
     $("trainNumber").textContent = currentNumber;
     $("modeCaption").textContent =
-      currentMode === "daily" ? "Today’s daily puzzle" :
       currentMode === "random" ? "Guaranteed solvable random number" :
       "Type your expression below";
     $("solvedCount").textContent = solvedSet.size.toLocaleString();
     $("solvedPercent").textContent = ((solvedSet.size / TOTAL_SOLVABLE_COMBOS) * 100).toFixed(2) + "% of all solvable combos";
-
-    const daily = getDailyPuzzleNumber();
-    $("dailyNumber").textContent = daily;
-    $("dailyStatus").textContent = dailySolved[getTodayKey()] ? "Solved today" : "Not solved yet";
   }
 
   function setStatus(message, type="info") {
@@ -271,9 +249,6 @@
       }
       if (Math.abs(result - 10) < 1e-9) {
         solvedSet.add(currentNumber);
-        if (currentMode === "daily" && currentNumber === getDailyPuzzleNumber()) {
-          dailySolved[getTodayKey()] = true;
-        }
         saveStats();
         updateUI();
         setStatus("Nice — <b>" + normalized + "</b> = 10.", "good");
@@ -339,41 +314,6 @@
   function hideSolution() {
     $("solutionBox").style.display = "none";
     $("solutionText").textContent = "";
-  }
-
-  function getTodayKey() {
-    const now = new Date();
-    const y = now.getFullYear();
-    const m = String(now.getMonth() + 1).padStart(2, "0");
-    const d = String(now.getDate()).padStart(2, "0");
-    return `${y}-${m}-${d}`;
-  }
-
-  function hashString(str) {
-    let h = 2166136261;
-    for (let i = 0; i < str.length; i++) {
-      h ^= str.charCodeAt(i);
-      h = Math.imul(h, 16777619);
-    }
-    return h >>> 0;
-  }
-
-  function getDailyPuzzleNumber() {
-    const key = getTodayKey();
-    let seed = hashString("subway10-" + key) % 10000;
-    for (let i = 0; i < 10000; i++) {
-      const candidate = String((seed + i) % 10000).padStart(4, "0");
-      if (solveNumber(candidate)) return candidate;
-    }
-    return "2368";
-  }
-
-  function loadDailyPuzzle() {
-    const n = getDailyPuzzleNumber();
-    const solution = solveNumber(n);
-    setCurrentNumber(n, "daily");
-    currentSolution = solution ? solution.expr : null;
-    setStatus("Daily puzzle loaded. No spoilers unless you tap <b>Show solution</b>.", "info");
   }
 
   function buildValues(digits) {
@@ -448,14 +388,11 @@
     return expr ? { expr } : null;
   }
 
-  // expose to buttons
   window.checkExpression = checkExpression;
   window.generateSolvableNumber = generateSolvableNumber;
   window.checkLiveTrainNumber = checkLiveTrainNumber;
   window.showSolution = showSolution;
-  window.loadDailyPuzzle = loadDailyPuzzle;
 
-  // initial state
   const initialSolution = solveNumber(currentNumber);
   currentSolution = initialSolution ? initialSolution.expr : null;
   updateUI();
