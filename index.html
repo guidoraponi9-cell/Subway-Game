@@ -31,21 +31,21 @@
         linear-gradient(180deg, #0a0f15 0%, #10161d 100%);
       color: var(--text);
       min-height: 100vh;
-      padding: 14px;
+      padding: 12px;
     }
 
     .app {
-      max-width: 460px;
+      max-width: 440px;
       margin: 0 auto;
       display: grid;
-      gap: 12px;
+      gap: 10px;
     }
 
     .header {
       background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: 24px;
-      padding: 16px 16px 14px;
+      padding: 15px 15px 13px;
       box-shadow: var(--shadow);
       overflow: hidden;
       position: relative;
@@ -57,7 +57,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 8px;
+      height: 7px;
       background: linear-gradient(90deg, var(--line-red) 0 33%, var(--line-blue) 33% 66%, var(--line-green) 66% 100%);
     }
 
@@ -85,7 +85,7 @@
       background: rgba(252, 204, 10, 0.14);
       color: #ffe27d;
       border: 1px solid rgba(252, 204, 10, 0.28);
-      padding: 8px 10px;
+      padding: 7px 10px;
       border-radius: 999px;
       font-size: 12px;
       font-weight: 700;
@@ -96,36 +96,32 @@
       background: var(--panel);
       border: 1px solid rgba(255,255,255,0.06);
       border-radius: var(--radius);
-      padding: 14px;
+      padding: 12px;
       box-shadow: var(--shadow);
     }
 
     .number-box {
       background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
       border-radius: 18px;
-      padding: 14px;
+      padding: 12px;
       text-align: center;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
     .label {
       font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 1.4px;
+      letter-spacing: 1.3px;
       color: var(--muted);
       margin-bottom: 6px;
     }
 
     .digits {
-      font-size: 42px;
+      font-size: 40px;
       font-weight: 800;
       letter-spacing: 8px;
       line-height: 1;
       font-variant-numeric: tabular-nums;
-    }
-
-    .expression-wrap {
-      margin-top: 12px;
     }
 
     .expression-display {
@@ -134,9 +130,9 @@
       border: 1px solid rgba(255,255,255,0.08);
       color: var(--text);
       border-radius: 18px;
-      padding: 16px 14px;
-      font-size: 22px;
-      min-height: 62px;
+      padding: 14px 12px;
+      font-size: 21px;
+      min-height: 56px;
       display: flex;
       align-items: center;
       overflow-x: auto;
@@ -149,26 +145,25 @@
     }
 
     .button-row,
-    .mini-row {
+    .mini-row,
+    .stats,
+    .digits-pad,
+    .ops-pad {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
-    .button-row {
-      grid-template-columns: 1fr 1fr;
-      margin-top: 12px;
-    }
-
-    .mini-row {
-      grid-template-columns: 1fr 1fr 1fr;
-      margin-top: 10px;
-    }
+    .button-row { grid-template-columns: 1fr 1fr; margin-top: 10px; }
+    .mini-row { grid-template-columns: 1fr 1fr 1fr; margin-top: 8px; }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+    .digits-pad { grid-template-columns: repeat(4, 1fr); margin-top: 8px; }
+    .ops-pad { grid-template-columns: repeat(7, 1fr); margin-top: 8px; }
 
     button {
       border: none;
-      border-radius: 16px;
-      padding: 14px 12px;
-      font-size: 15px;
+      border-radius: 14px;
+      padding: 12px 10px;
+      font-size: 14px;
       font-weight: 700;
       color: var(--text);
       background: #243041;
@@ -185,9 +180,9 @@
     .soft { background: #202a36; }
 
     .status {
-      margin-top: 12px;
+      margin-top: 10px;
       border-radius: 16px;
-      padding: 12px 13px;
+      padding: 11px 12px;
       font-size: 14px;
       line-height: 1.4;
       background: rgba(40, 80, 173, 0.15);
@@ -207,52 +202,31 @@
       border-color: rgba(239, 68, 68, 0.3);
     }
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
     .stat {
       background: var(--panel-2);
       border-radius: 18px;
-      padding: 12px 10px;
+      padding: 10px 8px;
       text-align: center;
       border: 1px solid rgba(255,255,255,0.05);
     }
 
     .stat .k {
       color: var(--muted);
-      font-size: 11px;
+      font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 4px;
     }
 
     .stat .v {
-      font-size: 19px;
+      font-size: 18px;
       font-weight: 800;
-    }
-
-    .digits-pad,
-    .ops-pad {
-      display: grid;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    .digits-pad {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .ops-pad {
-      grid-template-columns: repeat(7, 1fr);
     }
 
     .key {
       background: #202a36;
-      min-height: 44px;
-      font-size: 20px;
+      min-height: 42px;
+      font-size: 19px;
       font-weight: 800;
       border-radius: 14px;
       padding: 0;
@@ -260,29 +234,23 @@
 
     .key.op {
       background: #2a3542;
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .key.used {
       opacity: 0.38;
     }
 
-    .footer-actions {
-      margin-top: 10px;
-    }
-
     .rules {
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.55;
+      line-height: 1.5;
     }
 
     .rules ul {
       margin: 8px 0 0;
       padding-left: 18px;
     }
-
-    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -293,7 +261,7 @@
           <h1>Subway 10</h1>
           <div class="subtitle">Use the digits in order to make 10.</div>
         </div>
-        <div class="badge">Phone-friendly</div>
+        <div class="badge">Quick play</div>
       </div>
       <div class="number-box">
         <div class="label">Current train number</div>
@@ -303,28 +271,28 @@
 
     <section class="card">
       <div class="label">Your expression</div>
-      <div id="expressionDisplay" class="expression-display empty">Tap the keypad to build a solution</div>
+      <div id="expressionDisplay" class="expression-display empty">Tap the buttons to build a solution</div>
 
       <div class="button-row">
         <button class="accent" id="randomBtn">Random solvable</button>
-        <button class="soft" id="liveBtn">Check live train number</button>
+        <button class="soft" id="liveBtn">Check live train #</button>
       </div>
 
       <div class="mini-row">
-        <button class="good" id="checkBtn">Check solution</button>
+        <button class="good" id="checkBtn">Check</button>
         <button class="soft" id="clearBtn">Clear</button>
         <button class="soft" id="backBtn">Delete</button>
       </div>
 
       <div id="status" class="status">Try 2368. There is at least one valid answer.</div>
 
-      <div class="label" style="margin-top:12px;">Digits</div>
+      <div class="label" style="margin-top:10px;">Digits</div>
       <div class="digits-pad" id="digitsPad"></div>
 
       <div class="label" style="margin-top:10px;">Operators</div>
       <div class="ops-pad" id="opsPad"></div>
 
-      <div class="footer-actions">
+      <div style="margin-top:10px;">
         <button class="soft" id="showSolutionBtn" style="width:100%;">Show solution</button>
       </div>
     </section>
@@ -352,7 +320,7 @@
         <li>Digits must stay in order and each digit must be used exactly once.</li>
         <li>You can use +, -, ×, ÷, ^, and parentheses.</li>
         <li>You can combine adjacent digits into bigger numbers like 23 or 68.</li>
-        <li>“Check live train number” tells you if a number is solvable without revealing the answer.</li>
+        <li>Check live train number tells you if a number is solvable without revealing the answer.</li>
       </ul>
     </section>
   </div>
@@ -364,8 +332,10 @@
     let currentDigits = '2368';
     let currentExpression = '';
     let currentSolution = '(2*(3+6))-8';
+
     const solvedSet = new Set(JSON.parse(localStorage.getItem('subway10_solved') || '[]'));
     const seenSolvableSet = new Set(JSON.parse(localStorage.getItem('subway10_seen_solvable') || '[]'));
+    const solutionCache = {};
 
     function saveSets() {
       localStorage.setItem('subway10_solved', JSON.stringify([...solvedSet]));
@@ -384,6 +354,14 @@
       el.textContent = message;
     }
 
+    function normalize(expr) {
+      return expr.replace(/\s+/g, '');
+    }
+
+    function extractDigits(expr) {
+      return expr.replace(/[^0-9]/g, '');
+    }
+
     function renderExpression() {
       const el = document.getElementById('expressionDisplay');
       if (!currentExpression) {
@@ -394,25 +372,13 @@
         el.classList.remove('empty');
       }
       renderDigitButtons();
-    } else {
-        el.textContent = currentExpression;
-        el.classList.remove('empty');
-      }
     }
 
     function setDigits(digits) {
       currentDigits = digits;
-      document.getElementById('trainDigits').textContent = digits;
       currentExpression = '';
+      document.getElementById('trainDigits').textContent = digits;
       renderExpression();
-    }
-
-    function normalize(expr) {
-      return expr.replace(/\s+/g, '');
-    }
-
-    function extractDigits(expr) {
-      return expr.replace(/[^0-9]/g, '');
     }
 
     function evaluateExpression(expr) {
@@ -458,8 +424,6 @@
       return results;
     }
 
-    const solutionCache = {};
-
     function solveDigits(digits) {
       if (solutionCache[digits] !== undefined) return solutionCache[digits];
       const parts = digitsPartitions(digits);
@@ -481,14 +445,18 @@
     }
 
     function loadRandomSolvable() {
+      let digits = '';
+      let solution = null;
       let tries = 0;
-      let digits;
-      let solution;
-      do {
+      while (!solution && tries < 5000) {
         digits = randomFourDigits();
         solution = solveDigits(digits);
-        tries++;
-      } while (!solution && tries < 5000);
+        tries += 1;
+      }
+      if (!solution) {
+        setStatus('Could not find a solvable number. Try again.', 'error');
+        return;
+      }
       setDigits(digits);
       currentSolution = solution;
       seenSolvableSet.add(digits);
@@ -566,19 +534,9 @@
     function renderDigitButtons() {
       const wrap = document.getElementById('digitsPad');
       wrap.innerHTML = '';
-      const usedDigits = extractDigits(currentExpression);
-      let searchFrom = 0;
-      const usedIndexes = [];
-      for (const ch of usedDigits) {
-        const idx = currentDigits.indexOf(ch, searchFrom);
-        if (idx !== -1) {
-          usedIndexes.push(idx);
-          searchFrom = idx + 1;
-        }
-      }
-      currentDigits.split('').forEach((digit, idx) => {
+      currentDigits.split('').forEach((digit) => {
         const btn = document.createElement('button');
-        btn.className = 'key' + (usedIndexes.includes(idx) ? ' used' : '');
+        btn.className = 'key';
         btn.textContent = digit;
         btn.addEventListener('click', () => {
           currentExpression += digit;
@@ -590,7 +548,8 @@
 
     function buildOperatorPad() {
       const wrap = document.getElementById('opsPad');
-      operatorLayout.forEach(key => {
+      wrap.innerHTML = '';
+      operatorLayout.forEach((key) => {
         const btn = document.createElement('button');
         btn.className = 'key op';
         btn.textContent = key;
@@ -603,12 +562,17 @@
     }
 
     document.getElementById('randomBtn').addEventListener('click', loadRandomSolvable);
-    document.getElementById('liveBtn').addEventListener('click', loadRandomSolvable);
     document.getElementById('liveBtn').addEventListener('click', checkLiveTrainNumber);
     document.getElementById('checkBtn').addEventListener('click', checkSolution);
     document.getElementById('showSolutionBtn').addEventListener('click', showSolution);
-    document.getElementById('clearBtn').addEventListener('click', () => { currentExpression = ''; renderExpression(); });
-    document.getElementById('backBtn').addEventListener('click', () => { currentExpression = currentExpression.slice(0, -1); renderExpression(); });
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      currentExpression = '';
+      renderExpression();
+    });
+    document.getElementById('backBtn').addEventListener('click', () => {
+      currentExpression = currentExpression.slice(0, -1);
+      renderExpression();
+    });
 
     buildOperatorPad();
     renderDigitButtons();
