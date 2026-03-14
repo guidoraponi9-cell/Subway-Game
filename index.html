@@ -234,28 +234,41 @@
       font-weight: 800;
     }
 
-    .keypad {
+    .digits-pad,
+    .ops-pad {
       display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .digits-pad {
       grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-top: 12px;
+    }
+
+    .ops-pad {
+      grid-template-columns: repeat(7, 1fr);
     }
 
     .key {
       background: #202a36;
-      min-height: 56px;
-      font-size: 24px;
+      min-height: 44px;
+      font-size: 20px;
       font-weight: 800;
-      border-radius: 18px;
+      border-radius: 14px;
+      padding: 0;
     }
 
-    .key.op { background: #2a3542; }
-    .key.action { font-size: 16px; }
-    .key.enter { background: var(--line-green); }
-    .key.back { background: #4c2b31; }
+    .key.op {
+      background: #2a3542;
+      font-size: 18px;
+    }
+
+    .key.used {
+      opacity: 0.38;
+    }
 
     .footer-actions {
-      margin-top: 12px;
+      margin-top: 10px;
     }
 
     .rules {
@@ -305,7 +318,11 @@
 
       <div id="status" class="status">Try 2368. There is at least one valid answer.</div>
 
-      <div class="keypad" id="keypad"></div>
+      <div class="label" style="margin-top:12px;">Digits</div>
+      <div class="digits-pad" id="digitsPad"></div>
+
+      <div class="label" style="margin-top:10px;">Operators</div>
+      <div class="ops-pad" id="opsPad"></div>
 
       <div class="footer-actions">
         <button class="soft" id="showSolutionBtn" style="width:100%;">Show solution</button>
@@ -342,13 +359,7 @@
 
   <script>
     const TOTAL_SOLVABLE = 7437;
-    const keypadLayout = [
-      '7','8','9','(',
-      '4','5','6',')',
-      '1','2','3','^',
-      '0','+','-','*',
-      '/','23','68','10'
-    ];
+    const operatorLayout = ['(', ')', '^', '+', '-', '*', '/'];
 
     let currentDigits = '2368';
     let currentExpression = '';
@@ -376,9 +387,14 @@
     function renderExpression() {
       const el = document.getElementById('expressionDisplay');
       if (!currentExpression) {
-        el.textContent = 'Tap the keypad to build a solution';
+        el.textContent = 'Tap the buttons to build a solution';
         el.classList.add('empty');
       } else {
+        el.textContent = currentExpression;
+        el.classList.remove('empty');
+      }
+      renderDigitButtons();
+    } else {
         el.textContent = currentExpression;
         el.classList.remove('empty');
       }
@@ -547,13 +563,36 @@
       setStatus('Solution loaded.', 'success');
     }
 
-    function buildKeypad() {
-      const wrap = document.getElementById('keypad');
-      keypadLayout.forEach(key => {
+    function renderDigitButtons() {
+      const wrap = document.getElementById('digitsPad');
+      wrap.innerHTML = '';
+      const usedDigits = extractDigits(currentExpression);
+      let searchFrom = 0;
+      const usedIndexes = [];
+      for (const ch of usedDigits) {
+        const idx = currentDigits.indexOf(ch, searchFrom);
+        if (idx !== -1) {
+          usedIndexes.push(idx);
+          searchFrom = idx + 1;
+        }
+      }
+      currentDigits.split('').forEach((digit, idx) => {
         const btn = document.createElement('button');
-        btn.className = 'key';
-        if ('()+-*/^'.includes(key) && key.length === 1) btn.classList.add('op');
-        if (key === '10') btn.classList.add('action');
+        btn.className = 'key' + (usedIndexes.includes(idx) ? ' used' : '');
+        btn.textContent = digit;
+        btn.addEventListener('click', () => {
+          currentExpression += digit;
+          renderExpression();
+        });
+        wrap.appendChild(btn);
+      });
+    }
+
+    function buildOperatorPad() {
+      const wrap = document.getElementById('opsPad');
+      operatorLayout.forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'key op';
         btn.textContent = key;
         btn.addEventListener('click', () => {
           currentExpression += key;
@@ -564,13 +603,15 @@
     }
 
     document.getElementById('randomBtn').addEventListener('click', loadRandomSolvable);
+    document.getElementById('liveBtn').addEventListener('click', loadRandomSolvable);
     document.getElementById('liveBtn').addEventListener('click', checkLiveTrainNumber);
     document.getElementById('checkBtn').addEventListener('click', checkSolution);
     document.getElementById('showSolutionBtn').addEventListener('click', showSolution);
     document.getElementById('clearBtn').addEventListener('click', () => { currentExpression = ''; renderExpression(); });
     document.getElementById('backBtn').addEventListener('click', () => { currentExpression = currentExpression.slice(0, -1); renderExpression(); });
 
-    buildKeypad();
+    buildOperatorPad();
+    renderDigitButtons();
     currentSolution = solveDigits(currentDigits);
     seenSolvableSet.add(currentDigits);
     saveSets();
